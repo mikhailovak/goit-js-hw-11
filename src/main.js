@@ -3,6 +3,15 @@ import { renderImages, showNoResultsMessage } from './js/render-functions.js';
 
 const form = document.querySelector(".submit-form");
 const list = document.querySelector(".list");
+const loader = document.getElementById("loader");
+
+function showLoader() {
+    loader.style.display = "block";
+}
+
+function hideLoader() {
+    loader.style.display = "none";
+}
 
 function handleSearch(event) {
     event.preventDefault();
@@ -17,8 +26,11 @@ function handleSearch(event) {
         return;
     }
 
+    showLoader(); 
+
     fetchData(query)
         .then((data) => {
+            hideLoader(); 
             if (data.hits.length === 0) {
                 showNoResultsMessage();
             } else {
@@ -26,6 +38,7 @@ function handleSearch(event) {
             }
         })
         .catch(error => {
+            hideLoader(); 
             console.error("Error:", error);
             iziToast.error({
                 title: "Error",
